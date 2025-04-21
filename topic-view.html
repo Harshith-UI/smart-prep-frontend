@@ -114,15 +114,12 @@
 
     <script src="script.js"></script>
     <script>
-        // Show transition when navigating
         function redirectToMCQ() {
-            // Get and validate all required data
             const numQuestions = document.getElementById('num-questions').value;
             const currentSubject = localStorage.getItem('currentSubject');
             const currentTopic = localStorage.getItem('currentTopic');
             const currentChapterText = localStorage.getItem('currentChapterText');
 
-            // Validate data
             if (!currentSubject || !currentTopic || !currentChapterText) {
                 alert("Please select a topic first.");
                 return;
@@ -133,27 +130,19 @@
                 return;
             }
 
-            // Store data
             localStorage.setItem('numQuestions', numQuestions);
-            
-            // Show transition
-            const transition = document.getElementById('pageTransition');
-            transition.classList.add('active');
-            
-            // Redirect after transition
+            document.getElementById('pageTransition').classList.add('active');
             setTimeout(() => {
                 window.location.href = 'mcq-view.html';
             }, 500);
         }
 
         function redirectToSummary() {
-            // Get and validate all required data
             const numSummary = document.getElementById('num-summary').value;
             const currentSubject = localStorage.getItem('currentSubject');
             const currentTopic = localStorage.getItem('currentTopic');
             const currentChapterText = localStorage.getItem('currentChapterText');
 
-            // Validate data
             if (!currentSubject || !currentTopic || !currentChapterText) {
                 alert("Please select a topic first.");
                 return;
@@ -164,50 +153,63 @@
                 return;
             }
 
-            // Store data
             localStorage.setItem('numSummary', numSummary);
-            
-            // Show transition
-            const transition = document.getElementById('pageTransition');
-            transition.classList.add('active');
-            
-            // Redirect after transition
+            document.getElementById('pageTransition').classList.add('active');
             setTimeout(() => {
                 window.location.href = 'summary-view.html';
             }, 500);
         }
 
         function navigateBack() {
-            const transition = document.getElementById('pageTransition');
-            transition.classList.add('active');
-            
+            document.getElementById('pageTransition').classList.add('active');
             setTimeout(() => {
                 window.location.href = 'timetable.html';
             }, 500);
         }
 
-        // Initialize the page
         document.addEventListener('DOMContentLoaded', () => {
             const topicTitle = document.getElementById('topicTitle');
-            const chapterDisplay = document.getElementById('chapter-display');
             const pageContent = document.querySelector('.page-content');
-            
-            // Get the current topic and subject from localStorage
             const currentTopic = localStorage.getItem('currentTopic');
             const currentSubject = localStorage.getItem('currentSubject');
-            
-            // Update the title with both subject and topic
+
             if (currentSubject && currentTopic) {
                 topicTitle.textContent = `${currentSubject} - ${currentTopic}`;
             } else {
                 topicTitle.textContent = 'Topic View';
             }
-            
-            // Show content with animation
+
             setTimeout(() => {
                 pageContent.classList.add('visible');
             }, 100);
         });
+    </script>
+
+    <!-- ✅ Chatbase Chatbot Integration -->
+    <script>
+    (function(){
+        if(!window.chatbase || window.chatbase("getState")!=="initialized"){
+            window.chatbase=(...arguments)=>{
+                if(!window.chatbase.q){window.chatbase.q=[]}
+                window.chatbase.q.push(arguments)
+            };
+            window.chatbase=new Proxy(window.chatbase,{
+                get(target,prop){
+                    if(prop==="q"){return target.q}
+                    return(...args)=>target(prop,...args)
+                }
+            });
+        }
+        const onLoad=function(){
+            const script=document.createElement("script");
+            script.src="https://www.chatbase.co/embed.min.js";
+            script.id="bFDu0J-DGTvw77LJHiKDt"; // Replace with your bot ID if needed
+            script.domain="www.chatbase.co";
+            document.body.appendChild(script);
+        };
+        if(document.readyState==="complete"){onLoad()}
+        else{window.addEventListener("load",onLoad)}
+    })();
     </script>
 </body>
 </html>
